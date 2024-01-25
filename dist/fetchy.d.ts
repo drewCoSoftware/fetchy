@@ -18,5 +18,6 @@ export interface FetchyResponse<T extends IApiResponse> {
     Error: any | null;
     StatusCode: number;
 }
+export declare function fetchyFile(url: string): Promise<void>;
 export declare function fetchyPost<T extends IApiResponse>(url: string, data: any | null, headers?: {} | undefined): Promise<FetchyResponse<T>>;
 export declare function fetchy<T extends IApiResponse>(url: string, ops?: FetchyOptions | null): Promise<FetchyResponse<T>>;

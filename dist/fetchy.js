@@ -34,6 +34,33 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+// let p = fetch(url);
+// p.then((response) => {
+//   return response.blob();
+// }).then((blob) => {
+//   var file = window.URL.createObjectURL(blob);
+//   window.location.assign(file);
+// });
+// ----------------------------------------------------------------------------------------------------------
+// Download a file, sending credentials along the way...
+export function fetchyFile(url) {
+    return __awaiter(this, void 0, void 0, function () {
+        var p;
+        return __generator(this, function (_a) {
+            p = fetch(url, {
+                method: 'GET',
+                credentials: "include" // TODO: FETCHY needs to be some kind of configurable functor.
+            });
+            p.then(function (response) {
+                return response.blob();
+            }).then(function (blob) {
+                var file = window.URL.createObjectURL(blob);
+                window.location.assign(file);
+            });
+            return [2 /*return*/];
+        });
+    });
+}
 // ----------------------------------------------------------------------------------------------------------
 export function fetchyPost(url, data, headers) {
     if (headers === void 0) { headers = undefined; }

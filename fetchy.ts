@@ -30,6 +30,30 @@ export interface FetchyResponse<T extends IApiResponse> {
   // TODO: We can care about headers, etc. later??
 }
 
+  // let p = fetch(url);
+  // p.then((response) => {
+  //   return response.blob();
+  // }).then((blob) => {
+  //   var file = window.URL.createObjectURL(blob);
+  //   window.location.assign(file);
+  // });
+// ----------------------------------------------------------------------------------------------------------
+// Download a file, sending credentials along the way...
+export async function fetchyFile(url:string) {
+
+  let p = fetch(url, {
+    method: 'GET',
+    credentials: "include"    // TODO: FETCHY needs to be some kind of configurable functor.
+  });
+  p.then((response) => {
+    return response.blob();
+  }).then((blob) => {
+    var file = window.URL.createObjectURL(blob);
+    window.location.assign(file);
+  });
+
+}
+
 // ----------------------------------------------------------------------------------------------------------
 export async function fetchyPost<T extends IApiResponse>(url: string, data: any | null, headers: {} | undefined = undefined): Promise<FetchyResponse<T>> {
 
