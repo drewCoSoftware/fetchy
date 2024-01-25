@@ -30,15 +30,11 @@ export interface FetchyResponse<T extends IApiResponse> {
   // TODO: We can care about headers, etc. later??
 }
 
-  // let p = fetch(url);
-  // p.then((response) => {
-  //   return response.blob();
-  // }).then((blob) => {
-  //   var file = window.URL.createObjectURL(blob);
-  //   window.location.assign(file);
-  // });
+
 // ----------------------------------------------------------------------------------------------------------
 // Download a file, sending credentials along the way...
+// NOTE: This will just give a random file name.  We will probably want some way to return a
+// named file in the future.
 export async function fetchyFile(url:string) {
 
   let p = fetch(url, {
