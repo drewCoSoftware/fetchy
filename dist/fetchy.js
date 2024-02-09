@@ -13,7 +13,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     function verb(n) { return function (v) { return step([n, v]); }; }
     function step(op) {
         if (f) throw new TypeError("Generator is already executing.");
-        while (_) try {
+        while (g && (g = 0, op[0] && (_ = 0)), _) try {
             if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
             if (y = 0, t) op = [op[0] & 2, t.value];
             switch (op[0]) {
@@ -34,15 +34,10 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-// let p = fetch(url);
-// p.then((response) => {
-//   return response.blob();
-// }).then((blob) => {
-//   var file = window.URL.createObjectURL(blob);
-//   window.location.assign(file);
-// });
 // ----------------------------------------------------------------------------------------------------------
 // Download a file, sending credentials along the way...
+// NOTE: This will just give a random file name.  We will probably want some way to return a
+// named file in the future.
 export function fetchyFile(url) {
     return __awaiter(this, void 0, void 0, function () {
         var p;
