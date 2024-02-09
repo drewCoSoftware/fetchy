@@ -1,12 +1,9 @@
 {
+  "type": "module",
   "name": "aahfetchy",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "description": "This is an NPM package that is meant to help streamline some usage of the fetch API. In addition to this, it defines some basic interfaces that can make desiging and interacting with your APIs a bit easier.",
   "main": "./dist/fetchy.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "tsc --outdir ./dist"
-  },
   "author": "August&Harper",
   "license": "ISC",
   "types": "./dist/fetchy.d.ts",
