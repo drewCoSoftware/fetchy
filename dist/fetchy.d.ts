@@ -3,10 +3,11 @@ export interface IStatusData {
     IsLoading: boolean;
     Message: string;
 }
-export interface FetchyOptions {
-    method: string | undefined;
+export interface FetchyCallOptions {
+    method?: string | undefined;
     body?: any;
     headers?: {};
+    credentials: RequestCredentials;
 }
 export interface IApiResponse {
     Code: number;
@@ -18,6 +19,18 @@ export interface FetchyResponse<T extends IApiResponse> {
     Error: any | null;
     StatusCode: number;
 }
-export declare function fetchyFile(url: string): Promise<void>;
-export declare function fetchyPost<T extends IApiResponse>(url: string, data: any | null, headers?: {} | undefined): Promise<FetchyResponse<T>>;
-export declare function fetchy<T extends IApiResponse>(url: string, ops?: FetchyOptions | null): Promise<FetchyResponse<T>>;
+interface FetchyOptions {
+    ContentType?: string;
+    UserAgent?: string;
+    CredentialType?: RequestCredentials;
+}
+export declare class Fetchy {
+    private Options;
+    constructor(ops_?: FetchyOptions);
+    get<T extends IApiResponse>(url: string): Promise<FetchyResponse<IApiResponse>>;
+    post(url: string, data?: any): Promise<FetchyResponse<IApiResponse>>;
+    file(url: string): Promise<void>;
+    private BuildCallOptions;
+    private BuildHeaders;
+}
+export {};

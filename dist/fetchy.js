@@ -34,57 +34,96 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-// ----------------------------------------------------------------------------------------------------------
-// Download a file, sending credentials along the way...
-// NOTE: This will just give a random file name.  We will probably want some way to return a
-// named file in the future.
-export function fetchyFile(url) {
-    return __awaiter(this, void 0, void 0, function () {
-        var p;
-        return __generator(this, function (_a) {
-            p = fetch(url, {
-                method: 'GET',
-                credentials: "include" // TODO: FETCHY needs to be some kind of configurable functor.
-            });
-            p.then(function (response) {
-                return response.blob();
-            }).then(function (blob) {
-                var file = window.URL.createObjectURL(blob);
-                window.location.assign(file);
-            });
-            return [2 /*return*/];
-        });
-    });
-}
-// ----------------------------------------------------------------------------------------------------------
-export function fetchyPost(url, data, headers) {
-    if (headers === void 0) { headers = undefined; }
-    return __awaiter(this, void 0, void 0, function () {
-        var p;
-        return __generator(this, function (_a) {
-            p = fetchy(url, {
-                method: 'POST',
+var _DefaultOps = {
+    ContentType: 'application/json',
+    UserAgent: 'fetchy/1.0',
+    CredentialType: 'include'
+};
+// =============================================================================
+var Fetchy = /** @class */ (function () {
+    // -------------------------------------------------------------------------
+    function Fetchy(ops_) {
+        if (ops_ === void 0) { ops_ = _DefaultOps; }
+        var _this = this;
+        // -------------------------------------------------------------------------
+        this.BuildCallOptions = function (method, data) {
+            var res = {
+                method: method,
+                headers: _this.BuildHeaders(),
                 body: data == null ? null : JSON.stringify(data),
-                headers: headers
+                credentials: _this.Options.CredentialType
+            };
+            return res;
+        };
+        // -------------------------------------------------------------------------
+        this.BuildHeaders = function () {
+            var res = {};
+            if (_this.Options.ContentType) {
+                res['Content-Type'] = _this.Options.ContentType;
+            }
+            if (_this.Options.UserAgent) {
+                res['Content-Type'] = _this.Options.UserAgent;
+            }
+            return res;
+        };
+        this.Options = ops_;
+    }
+    // -------------------------------------------------------------------------
+    Fetchy.prototype.get = function (url) {
+        return __awaiter(this, void 0, void 0, function () {
+            var ops, res;
+            return __generator(this, function (_a) {
+                ops = {
+                    headers: this.BuildHeaders(),
+                    credentials: this.Options.CredentialType
+                };
+                res = _fetchy(url, ops);
+                return [2 /*return*/, res];
             });
-            return [2 /*return*/, p];
         });
-    });
-}
+    };
+    // -----------------------------------------------------------
+    Fetchy.prototype.post = function (url, data) {
+        return __awaiter(this, void 0, void 0, function () {
+            var ops, p;
+            return __generator(this, function (_a) {
+                ops = this.BuildCallOptions('post', data);
+                p = _fetchy(url, ops);
+                return [2 /*return*/, p];
+            });
+        });
+    };
+    // -----------------------------------------------------------
+    // TODO: We need a way to return a named file....
+    Fetchy.prototype.file = function (url) {
+        return __awaiter(this, void 0, void 0, function () {
+            var p;
+            return __generator(this, function (_a) {
+                p = fetch(url, {
+                    method: 'GET',
+                    credentials: this.Options.CredentialType
+                });
+                p.then(function (response) {
+                    return response.blob();
+                }).then(function (blob) {
+                    var file = window.URL.createObjectURL(blob);
+                    window.location.assign(file);
+                });
+                return [2 /*return*/];
+            });
+        });
+    };
+    return Fetchy;
+}());
+export { Fetchy };
 // ----------------------------------------------------------------------------------------------------------
-export function fetchy(url, ops) {
+function _fetchy(url, ops) {
     if (ops === void 0) { ops = null; }
     return __awaiter(this, void 0, void 0, function () {
         var res, p, success, statusCode;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    // Populate default as needed.....
-                    if (ops == null) {
-                        ops = {
-                            method: 'GET'
-                        };
-                    }
                     res = {
                         Success: false,
                         Data: null,
@@ -95,7 +134,7 @@ export function fetchy(url, ops) {
                         method: ops.method,
                         body: ops.body,
                         headers: ops.headers,
-                        credentials: "include" // TODO: FETCHY needs to be some kind of configurable functor.
+                        credentials: ops.credentials // TODO: FETCHY needs to be some kind of configurable functor.
                     });
                     success = true;
                     statusCode = 0;

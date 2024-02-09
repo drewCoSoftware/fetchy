@@ -1,5 +1,4 @@
 
-
 // NOTE: This thingy could be used for any of our loading components....
 export interface IStatusData {
   HasError: boolean,
@@ -7,10 +6,11 @@ export interface IStatusData {
   Message: string
 }
 
-export interface FetchyOptions {
-  method: string | undefined,
+export interface FetchyCallOptions {
+  method?: string | undefined,
   body?: any,
   headers?: {}
+  credentials: RequestCredentials
 }
 
 export interface IApiResponse {
@@ -30,46 +30,94 @@ export interface FetchyResponse<T extends IApiResponse> {
   // TODO: We can care about headers, etc. later??
 }
 
-
-// ----------------------------------------------------------------------------------------------------------
-// Download a file, sending credentials along the way...
-// NOTE: This will just give a random file name.  We will probably want some way to return a
-// named file in the future.
-export async function fetchyFile(url:string) {
-
-  let p = fetch(url, {
-    method: 'GET',
-    credentials: "include"    // TODO: FETCHY needs to be some kind of configurable functor.
-  });
-  p.then((response) => {
-    return response.blob();
-  }).then((blob) => {
-    var file = window.URL.createObjectURL(blob);
-    window.location.assign(file);
-  });
-
+// =============================================================================
+interface FetchyOptions {
+  ContentType?: string,
+  UserAgent?: string,
+  CredentialType?: RequestCredentials
 }
 
-// ----------------------------------------------------------------------------------------------------------
-export async function fetchyPost<T extends IApiResponse>(url: string, data: any | null, headers: {} | undefined = undefined): Promise<FetchyResponse<T>> {
-
-  let p = fetchy<T>(url, {
-    method: 'POST',
-    body: data == null ? null : JSON.stringify(data),
-    headers: headers
-  });
-
-  return p;
+const _DefaultOps: FetchyOptions = {
+  ContentType: 'application/json',
+  UserAgent: 'fetchy/1.0',
+  CredentialType: 'include'
 }
 
-// ----------------------------------------------------------------------------------------------------------
-export async function fetchy<T extends IApiResponse>(url: string, ops: FetchyOptions | null = null): Promise<FetchyResponse<T>> {
-  // Populate default as needed.....
-  if (ops == null) {
-    ops = {
-      method: 'GET'
-    }
+// =============================================================================
+export class Fetchy {
+
+  private Options: FetchyOptions;
+
+  // -------------------------------------------------------------------------
+  constructor(ops_: FetchyOptions = _DefaultOps) {
+    this.Options = ops_;
   }
+
+  // -------------------------------------------------------------------------
+  async get<T extends IApiResponse>(url: string) {
+    const ops: FetchyCallOptions = {
+      headers: this.BuildHeaders(),
+      credentials: this.Options.CredentialType
+    };
+
+    const res = _fetchy(url, ops);
+    return res;
+  }
+
+  // -----------------------------------------------------------
+  async post(url: string, data?: any) {
+    const ops = this.BuildCallOptions('post', data);
+    let p = _fetchy(url, ops);
+    return p;
+  }
+
+  // -----------------------------------------------------------
+  // TODO: We need a way to return a named file....
+  async file(url: string) {
+
+    let p = fetch(url, {
+      method: 'GET',
+      credentials: this.Options.CredentialType
+    });
+    p.then((response) => {
+      return response.blob();
+    }).then((blob) => {
+      var file = window.URL.createObjectURL(blob);
+      window.location.assign(file);
+    });
+
+  }
+
+
+  // -------------------------------------------------------------------------
+  private BuildCallOptions = (method: string, data?: any) => {
+
+    let res: FetchyCallOptions = {
+      method,
+      headers: this.BuildHeaders(),
+      body: data == null ? null : JSON.stringify(data),
+      credentials: this.Options.CredentialType
+    }
+
+    return res;
+  }
+
+  // -------------------------------------------------------------------------
+  private BuildHeaders = () => {
+    let res = {};
+    if (this.Options.ContentType) {
+      res['Content-Type'] = this.Options.ContentType;
+    }
+    if (this.Options.UserAgent) {
+      res['Content-Type'] = this.Options.UserAgent;
+    }
+
+    return res;
+  }
+}
+
+// ----------------------------------------------------------------------------------------------------------
+async function _fetchy<T extends IApiResponse>(url: string, ops: FetchyCallOptions | null = null): Promise<FetchyResponse<T>> {
 
   let res: FetchyResponse<T> = {
     Success: false,
@@ -82,7 +130,7 @@ export async function fetchy<T extends IApiResponse>(url: string, ops: FetchyOpt
     method: ops.method,
     body: ops.body,
     headers: ops.headers,
-    credentials: "include"    // TODO: FETCHY needs to be some kind of configurable functor.
+    credentials: ops.credentials    // TODO: FETCHY needs to be some kind of configurable functor.
   })
 
   let success = true;
