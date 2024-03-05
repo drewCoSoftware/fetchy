@@ -66,7 +66,7 @@ export class Fetchy {
 
   // -----------------------------------------------------------
   async post(url: string, data?: any) {
-    const ops = this.BuildCallOptions('post', data);
+    const ops = this.BuildCallOptions('POST', data);
     let p = _fetchy(url, ops);
     return p;
   }
@@ -93,7 +93,7 @@ export class Fetchy {
   private BuildCallOptions = (method: string, data?: any) => {
 
     let res: FetchyCallOptions = {
-      method,
+      method : method,
       headers: this.BuildHeaders(),
       body: data == null ? null : JSON.stringify(data),
       credentials: this.Options.CredentialType
@@ -109,7 +109,7 @@ export class Fetchy {
       res['Content-Type'] = this.Options.ContentType;
     }
     if (this.Options.UserAgent) {
-      res['Content-Type'] = this.Options.UserAgent;
+      res['User-Agent'] = this.Options.UserAgent;
     }
 
     return res;

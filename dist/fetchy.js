@@ -62,7 +62,7 @@ var Fetchy = /** @class */ (function () {
                 res['Content-Type'] = _this.Options.ContentType;
             }
             if (_this.Options.UserAgent) {
-                res['Content-Type'] = _this.Options.UserAgent;
+                res['User-Agent'] = _this.Options.UserAgent;
             }
             return res;
         };
@@ -87,7 +87,7 @@ var Fetchy = /** @class */ (function () {
         return __awaiter(this, void 0, void 0, function () {
             var ops, p;
             return __generator(this, function (_a) {
-                ops = this.BuildCallOptions('post', data);
+                ops = this.BuildCallOptions('POST', data);
                 p = _fetchy(url, ops);
                 return [2 /*return*/, p];
             });
@@ -152,7 +152,7 @@ function _fetchy(url, ops) {
                             res.Data = data;
                             res.Success = success;
                             res.StatusCode = statusCode;
-                        })["catch"](function (error) {
+                        }).catch(function (error) {
                             // Errors happen when there is some kind of network issue.
                             res.Success = false;
                             res.Error = error;

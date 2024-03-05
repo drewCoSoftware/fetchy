@@ -14,5 +14,6 @@
   "bugs": {
     "url": "https://github.com/drewCoSoftware/fetchy/issues"
   },
-  "homepage": "https://github.com/drewCoSoftware/fetchy#readme"
+  "homepage": "https://github.com/drewCoSoftware/fetchy#readme",
+  "scripts": { }
 }
