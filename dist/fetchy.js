@@ -69,6 +69,34 @@ var Fetchy = /** @class */ (function () {
         this.Options = ops_;
     }
     // -------------------------------------------------------------------------
+    Fetchy.prototype["delete"] = function (url) {
+        return __awaiter(this, void 0, void 0, function () {
+            var ops, res;
+            return __generator(this, function (_a) {
+                ops = {
+                    headers: this.BuildHeaders(),
+                    credentials: this.Options.CredentialType
+                };
+                res = _fetchy(url, ops);
+                return [2 /*return*/, res];
+            });
+        });
+    };
+    // -------------------------------------------------------------------------
+    Fetchy.prototype.put = function (url) {
+        return __awaiter(this, void 0, void 0, function () {
+            var ops, res;
+            return __generator(this, function (_a) {
+                ops = {
+                    headers: this.BuildHeaders(),
+                    credentials: this.Options.CredentialType
+                };
+                res = _fetchy(url, ops);
+                return [2 /*return*/, res];
+            });
+        });
+    };
+    // -------------------------------------------------------------------------
     Fetchy.prototype.get = function (url) {
         return __awaiter(this, void 0, void 0, function () {
             var ops, res;
@@ -134,7 +162,7 @@ function _fetchy(url, ops) {
                         method: ops.method,
                         body: ops.body,
                         headers: ops.headers,
-                        credentials: ops.credentials // TODO: FETCHY needs to be some kind of configurable functor.
+                        credentials: ops.credentials
                     });
                     success = true;
                     statusCode = 0;
@@ -152,7 +180,7 @@ function _fetchy(url, ops) {
                             res.Data = data;
                             res.Success = success;
                             res.StatusCode = statusCode;
-                        }).catch(function (error) {
+                        })["catch"](function (error) {
                             // Errors happen when there is some kind of network issue.
                             res.Success = false;
                             res.Error = error;

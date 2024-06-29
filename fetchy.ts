@@ -54,6 +54,28 @@ export class Fetchy {
   }
 
   // -------------------------------------------------------------------------
+  async delete(url: string) {
+    const ops: FetchyCallOptions = {
+      headers: this.BuildHeaders(),
+      credentials: this.Options.CredentialType
+    };
+
+    const res = _fetchy(url, ops);
+    return res;
+  }
+
+    // -------------------------------------------------------------------------
+    async put(url: string) {
+      const ops: FetchyCallOptions = {
+        headers: this.BuildHeaders(),
+        credentials: this.Options.CredentialType
+      };
+  
+      const res = _fetchy(url, ops);
+      return res;
+    }
+  
+  // -------------------------------------------------------------------------
   async get<T extends IApiResponse>(url: string) {
     const ops: FetchyCallOptions = {
       headers: this.BuildHeaders(),
@@ -93,7 +115,7 @@ export class Fetchy {
   private BuildCallOptions = (method: string, data?: any) => {
 
     let res: FetchyCallOptions = {
-      method : method,
+      method: method,
       headers: this.BuildHeaders(),
       body: data == null ? null : JSON.stringify(data),
       credentials: this.Options.CredentialType
@@ -130,7 +152,7 @@ async function _fetchy<T extends IApiResponse>(url: string, ops: FetchyCallOptio
     method: ops.method,
     body: ops.body,
     headers: ops.headers,
-    credentials: ops.credentials    // TODO: FETCHY needs to be some kind of configurable functor.
+    credentials: ops.credentials
   })
 
   let success = true;
