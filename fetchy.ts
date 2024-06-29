@@ -57,7 +57,8 @@ export class Fetchy {
   async delete(url: string) {
     const ops: FetchyCallOptions = {
       headers: this.BuildHeaders(),
-      credentials: this.Options.CredentialType
+      credentials: this.Options.CredentialType,
+      method: 'DELETE'
     };
 
     const res = _fetchy(url, ops);
@@ -68,7 +69,8 @@ export class Fetchy {
     async put(url: string) {
       const ops: FetchyCallOptions = {
         headers: this.BuildHeaders(),
-        credentials: this.Options.CredentialType
+        credentials: this.Options.CredentialType,
+        method: 'PUT'
       };
   
       const res = _fetchy(url, ops);

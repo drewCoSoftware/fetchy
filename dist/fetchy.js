@@ -75,7 +75,8 @@ var Fetchy = /** @class */ (function () {
             return __generator(this, function (_a) {
                 ops = {
                     headers: this.BuildHeaders(),
-                    credentials: this.Options.CredentialType
+                    credentials: this.Options.CredentialType,
+                    method: 'DELETE'
                 };
                 res = _fetchy(url, ops);
                 return [2 /*return*/, res];
@@ -89,7 +90,8 @@ var Fetchy = /** @class */ (function () {
             return __generator(this, function (_a) {
                 ops = {
                     headers: this.BuildHeaders(),
-                    credentials: this.Options.CredentialType
+                    credentials: this.Options.CredentialType,
+                    method: 'PUT'
                 };
                 res = _fetchy(url, ops);
                 return [2 /*return*/, res];
