@@ -5,3 +5,13 @@ with your APIs a bit easier.
 
 
 ## Build It!
+```
+tsc --outdir dist
+```
+
+## Publish It!
+
+```
+npm publish
+```
+You will need to authenticate first, of course...
