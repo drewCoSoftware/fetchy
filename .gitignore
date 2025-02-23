@@ -424,3 +424,9 @@ ShopifyApps/RelatedSearch/server/RelatedSearchServer/wwwroot/**.js
 /ShopifyApps/RelatedSearch/build
 /ShopifyApps/RelatedSearch/build-src/rs-admin-app
 /StatusMonitor/db-data
+
+
+# dotnet stuff....
+**/bin/
+**/obj/
+**/dist/
