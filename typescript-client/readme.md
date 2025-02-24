@@ -1,7 +1,6 @@
-# Fetchy
-This is an NPM package that is meant to help streamline some usage of the fetch API.
-In addition to this, it defines some basic interfaces that can make desiging and interacting
-with your APIs a bit easier.
+## Typescript / NPM
+This client can be used in Typescript / Javascript.  It offers simplification of some fetch API
+as well as standard fetchy interfaces.
 
 
 ## Build It!
